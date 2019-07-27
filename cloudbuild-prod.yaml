@@ -37,4 +37,8 @@ steps:
 
 - id: 'Building image form Dockfile-prod'
   name: 'gcr.io/cloud-builders/docker'
-  args: ['exec', '-t', 'app', 'php', 'artisan', 'storage:link']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/app-laravel', '-f', 'Dockerfile-prod', '.']
+
+- id: 'Push image'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/app-laravel']
