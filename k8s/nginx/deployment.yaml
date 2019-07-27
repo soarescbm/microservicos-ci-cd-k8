@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-serveer
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx-server
+    spec:
+      containers:
+      - name: nginx-server
+        image: nginx:1.17-alpine
+        ports:
+          - containerPort: 80 
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        volumeMounts:
+          - mountPath: /etc/nginx/conf.d
+            name: nginx-conf
+            readOnly: true
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html
+            name: nginx-index
+            readOnly: true
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html
+            name: nginx-index-html
+            readOnly: true
+
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx-conf
+                path: nginx.conf 
+
+ 
+        - name: nginx-index
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx-index
+                path: index.php
+                
+        - name: nginx-index-html
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx-index
+                path: index2.html
+

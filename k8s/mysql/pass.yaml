@@ -1,0 +1,1 @@
+ #kubectl create secret generic mysql-pass --from-literal=password='a1b2b3f4' 
